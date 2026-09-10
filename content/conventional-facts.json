@@ -1,0 +1,9 @@
+[
+  {"letter":"C","fact":"Roman numeral 100","reference":"Unicode Roman numerals","ambiguity":"low"},
+  {"letter":"D","fact":"Roman numeral 500","reference":"Unicode Roman numerals","ambiguity":"low"},
+  {"letter":"I","fact":"Roman numeral 1","reference":"Unicode Roman numerals","ambiguity":"low"},
+  {"letter":"L","fact":"Roman numeral 50","reference":"Unicode Roman numerals","ambiguity":"low"},
+  {"letter":"M","fact":"Roman numeral 1000","reference":"Unicode Roman numerals","ambiguity":"low"},
+  {"letter":"V","fact":"Roman numeral 5","reference":"Unicode Roman numerals","ambiguity":"low"},
+  {"letter":"X","fact":"Roman numeral 10","reference":"Unicode Roman numerals","ambiguity":"low"}
+]

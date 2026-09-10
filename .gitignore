@@ -1,0 +1,10 @@
+# Local source corpora: needed to compile, never published.
+content/tiwwdty/
+content/*extract*.csv
+content/candidates.csv
+content/word-candidates-definition-and-frequency.jsonl
+content/cmudict.dict
+
+# Generated diagnostics and Python caches.
+__pycache__/
+tools/__pycache__/

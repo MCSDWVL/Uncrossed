@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f6f3ed">
+    <title>Uncrossed</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="game-shell">
+      <header>
+        <p class="eyebrow" id="puzzle-date"></p>
+        <h1>Uncrossed</h1>
+        <p class="subtitle">A tiny daily crossword.</p>
+      </header>
+      <section class="puzzle" aria-label="Today's puzzle">
+        <div class="board-wrap">
+          <div class="board" id="board" role="group" aria-label="Answer letters"></div>
+        </div>
+        <h2>Down</h2>
+        <ol class="clues" id="down-clues"></ol>
+        <h2>Across</h2>
+        <ol class="clues across-clues" id="across-clues"></ol>
+      </section>
+      <p class="message" id="message" role="status" aria-live="polite"></p>
+      <button class="reset" id="check-letters" type="button">Check letters</button>
+      <button class="reset" id="reset" type="button">Clear entry</button>
+      <p class="help">Click a square or use the keyboard. Your entry is saved on this device.</p>
+      <footer class="attribution">Crossword clues sourced from Matt Ginsberg’s <a href="https://tiwwdty.com/clue/">Crossword Clue Database</a> (final edition, 2023)</footer>
+    </main>
+    <script type="module" src="js/game.js"></script>
+  </body>
+</html>

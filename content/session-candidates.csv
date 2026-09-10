@@ -1,0 +1,68 @@
+id,letter,clue_text,mechanism,surface_answer,status,editor_notes,duplicate_key
+session-A-02,A,Top report-card mark,direct-letter-fact,,candidate,Verify uniqueness,topreportcardmark
+session-A-05,A,The article before vowel sounds,direct-letter-fact,,candidate,Check wording,articlevowels
+session-B-01,B,Honey maker,homophone,bee,candidate,Verify common pronunciation,honeybee
+session-B-02,B,Plan alternative,direct-letter-fact,,candidate,Check clue convention,planalternative
+session-C-01,C,Like a small ocean.,homophone,sea,candidate,Verify common pronunciation,oceansea
+session-C-02,C,To look at,homophone,see,candidate,Verify common pronunciation,seesee
+session-C-03,C,Citrus vitamin,direct-letter-fact,,candidate,Check wording,citrusvitamin
+session-C-04,C,Roman numeral for one hundred,direct-letter-fact,,candidate,Verify convention,roman100
+session-C-05,C,A passing grade,direct-letter-fact,,candidate,Check grading context,gradebelowb
+session-D-02,D,Roman numeral for five hundred,direct-letter-fact,,candidate,Verify convention,roman500
+session-D-03,D,Bofa _s?,direct-letter-fact,,candidate,Verify convention,roman500
+session-E-02,E,Online mail briefly,direct-letter-fact,,candidate,Check clue convention,emailbriefly
+session-E-03,E,The base of natural logarithms,direct-letter-fact,,candidate,May be too specialist,baseoflogs
+session-E-04,E,Together with C and G makes the C-Major Chord,direct-letter-fact,,candidate,Verify uniqueness,noteafterd
+session-F-01,F,A failing report-card mark,direct-letter-fact,,candidate,Check grading context,failinggrade
+session-F-02,F,Keyboard key often paired with a number,direct-letter-fact,,candidate,Check ambiguity,functionkey
+session-F-03,F,Chemical symbol for fluorine,direct-letter-fact,,candidate,Verify convention,symbolfluorine
+session-G-01,G,A thousand bucks,direct-letter-fact,,candidate,Check lowercase convention,metricthousand
+session-G-02,G,Nothing but a _ thing,direct-letter-fact,,candidate,Verify uniqueness,noteafterf
+session-G-04,G,Rating for general audiences,direct-letter-fact,,candidate,Check film-rating locale,generalrating
+session-H-01,H,Chemical symbol for hydrogen,direct-letter-fact,,candidate,Verify convention,symbolhydrogen
+session-I-01,I,What you're reading this with,homophone,eye,candidate,Verify common pronunciation,seeingeyei
+session-I-04,I,Chemical symbol for iodine,direct-letter-fact,,candidate,Verify convention,symboliodine
+session-J-01,J,Blue bird,homophone,jay,candidate,Verify common pronunciation,bluebirdjay
+session-J-03,J,Jack in a deck shorthand,direct-letter-fact,,candidate,Check card convention,cardjack
+session-J-05,J,Something you smoke,direct-letter-fact,,candidate,Too easy perhaps,firstofjazz
+session-K-01,K,Dissinterested affirmation,homophone,kay,candidate,Verify common pronunciation,okaykay
+session-K-02,K,Chemical symbol for potassium,direct-letter-fact,,candidate,Verify convention,symbolpotassium
+session-K-03,K,A thousand,direct-letter-fact,,candidate,Check lowercase convention,pricek
+session-K-04,K,Strikeout notation in baseball,direct-letter-fact,,candidate,Check scoring convention,baseballstrikeout
+session-L-01,L,Roman numeral fifty,direct-letter-fact,,candidate,Verify convention,roman50
+session-L-02,L,Something you have to hold,direct-letter-fact,,candidate,Check regionality,learnerplate
+session-M-01,M,Roman numeral one thousand,direct-letter-fact,,candidate,Verify convention,roman1000
+session-M-02,M,Metric prefix for million,direct-letter-fact,,candidate,Check lowercase convention,metricmillion
+session-M-04,M,Type of dash that gives away AI writing,direct-letter-fact,,candidate,Check apparel convention,mediumsize
+session-N-01,N,At the top of the compass,direct-letter-fact,,candidate,Verify convention,compassnorth
+session-O-01,O,Pay what you _,homophone,owe,candidate,Verify common pronunciation,oweo
+session-O-02,O,Love,direct-letter-fact,,candidate,Verify convention,tennislove
+session-P-01,P,Small green vegetable,homophone,pea,candidate,Verify common pronunciation,vegetablepea
+session-P-02,P,You have to after drinking,direct-letter-fact,,candidate,Check signage convention,parkinginitial
+session-Q-01,Q,Line of waiting people,homophone,queue,candidate,Verify common pronunciation,waitingqueue
+session-Q-02,Q,A stick to hit a ball,homophone,cue,candidate,Verify common pronunciation,poolcue
+session-Q-04,Q,Ten-point Scrabble tile,direct-letter-fact,,candidate,Verify edition,scrabble10
+session-R-02,R,Pirates favorite letter,reference-or-trivia,,candidate,Check joke familiarity,pirateletter
+session-S-02,S,Makes a plural,direct-letter-fact,,candidate,Check ambiguity,pluralending
+session-S-04,S,Bottom of a compass,direct-letter-fact,,candidate,Verify convention,compasssouth
+session-T-01,T,Hot drink,homophone,tea,candidate,Verify common pronunciation,hottea
+session-T-02,T,Golf starting point,homophone,tee,candidate,Verify common pronunciation,golftee
+session-U-01,U,The person reading this,homophone,you,candidate,Verify common pronunciation,youu
+session-U-02,U,Woolly animal,homophone,ewe,candidate,Verify common pronunciation,woollyewe
+session-U-03,U,A kind of turn,direct-letter-fact,,candidate,Check signage convention,uturn
+session-U-05,U,Only who can prevent forest fires?,direct-letter-fact,,candidate,Too easy perhaps,twentyfirst
+session-V-01,V,Roman numeral five,direct-letter-fact,,candidate,Verify convention,roman5
+session-V-02,V,Victory,direct-letter-fact,,candidate,Check cultural meaning,victorysign
+session-W-03,W,Whiskey in the NATO alphabet,direct-letter-fact,,candidate,Check convention,natowhiskey
+session-W-04,W,Common web prefix briefly,direct-letter-fact,,candidate,Check ambiguity,webprefix
+session-X-01,X,Roman numeral ten,direct-letter-fact,,candidate,Verify convention,roman10
+session-X-02,X,Multiplication sign in algebra,direct-letter-fact,,candidate,Check notation,multiplication
+session-X-03,X,Somebody that you used to know,homophone,ex,candidate,Verify common pronunciation,exx
+session-X-04,X,Ray,,candidate,Check answer giveaway,xrayinitial
+session-X-05,X,Most women have two,direct-letter-fact,,candidate,Too easy perhaps,twentyfourth
+session-Y-01,Y,Question word,homophone,why,candidate,Verify common pronunciation,whyy
+session-Y-02,Y,Fork in the road shape,direct-letter-fact,,candidate,Check visual clue,forkshape
+session-Y-03,Y,Toddlers' favorite word,direct-letter-fact,,candidate,Check convention,natoyankee
+session-Z-01,Z,Sleeping sound first character,direct-letter-fact,,candidate,Too easy perhaps,sleepingsound
+session-Z-02,Z,Striped animal initial,direct-letter-fact,,candidate,Too easy perhaps,zebrainitial
+session-Z-03,Z,Zulu in the NATO alphabet,direct-letter-fact,,candidate,Check convention,natozulu
