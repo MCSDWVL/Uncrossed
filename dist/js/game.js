@@ -43,17 +43,30 @@ const debug = new URLSearchParams(location.search).has('debug');
 let answer, clues;
 const storageKey = `uncrossed:${seed}`;
 let state = { letters: [], solved: false };
+let activeClueIndex = null;
+let acrossClueRevealed = false;
 
 function persist() { try { localStorage.setItem(storageKey, JSON.stringify(state)); } catch { /* private browsing may deny it */ } }
 function render() {
   $('puzzle-date').textContent = validSeed(seed)
     ? new Intl.DateTimeFormat('en-US', { dateStyle: 'full', timeZone: 'America/Los_Angeles' }).format(new Date(`${seed}T12:00:00Z`))
     : `Seed: ${seed}`;
-  board.replaceChildren(...clues.map((clue, index) => { const cell = document.createElement('label'); cell.className = 'cell'; cell.htmlFor = `letter-${index}`; const num = document.createElement('span'); num.className = 'cell-number'; num.textContent = index + 1; const input = document.createElement('input'); input.className = 'letter-input'; input.id = `letter-${index}`; input.maxLength = 1; input.autocomplete = 'off'; input.inputMode = 'text'; input.value = state.letters[index]; input.setAttribute('aria-label', `Letter ${index + 1}: ${clue.clue}`); input.addEventListener('focus', () => { cell.classList.add('active'); input.select(); }); input.addEventListener('blur', () => cell.classList.remove('active')); input.addEventListener('input', () => onInput(index, input.value)); input.addEventListener('keydown', (event) => onKey(index, event)); cell.append(num, input); return cell; }));
-  $('down-clues').replaceChildren(...clues.map((clue, index) => { const item = document.createElement('li'); item.textContent = clue.clue; if (debug) { const details = document.createElement('small'); details.className = 'debug-details'; details.textContent = clue.sourceAnswer ? ` [Ginsberg database answer: ${clue.sourceAnswer}; mapped to: ${answer.word[index].toUpperCase()}; ID: ${clue.id}]` : ` [${clue.mechanism}; ID: ${clue.id}]`; item.append(details); } return item; }));
-  const across = document.createElement('li'); across.textContent = answer.hint; if (debug && answer.clueSource) { const details = document.createElement('small'); details.className = 'debug-details'; details.textContent = ` [Ginsberg database answer: ${answer.word.toUpperCase()}; ID: ${answer.clueSource.id}]`; across.append(details); } $('across-clues').replaceChildren(across);
+  board.replaceChildren(...clues.map((clue, index) => { const cell = document.createElement('label'); cell.className = 'cell'; cell.htmlFor = `letter-${index}`; const num = document.createElement('span'); num.className = 'cell-number'; num.textContent = index + 1; const input = document.createElement('input'); input.className = 'letter-input'; input.id = `letter-${index}`; input.maxLength = 1; input.autocomplete = 'off'; input.inputMode = 'text'; input.value = state.letters[index]; input.setAttribute('aria-label', `Letter ${index + 1}: ${clue.clue}`); input.addEventListener('focus', () => { cell.classList.add('active'); setActiveClue(index); input.select(); }); input.addEventListener('blur', () => { cell.classList.remove('active'); setActiveClue(null); }); input.addEventListener('input', () => onInput(index, input.value)); input.addEventListener('keydown', (event) => onKey(index, event)); cell.append(num, input); return cell; }));
+  $('down-clues').replaceChildren(...clues.map((clue, index) => { const item = document.createElement('li'); item.classList.toggle('active', index === activeClueIndex); item.textContent = clue.clue; if (debug) { const details = document.createElement('small'); details.className = 'debug-details'; details.textContent = clue.sourceAnswer ? ` [Ginsberg database answer: ${clue.sourceAnswer}; mapped to: ${answer.word[index].toUpperCase()}; ID: ${clue.id}]` : ` [${clue.mechanism}; ID: ${clue.id}]`; item.append(details); } return item; }));
+  const across = document.createElement('li');
+  if (acrossClueRevealed) { across.textContent = answer.hint; if (debug && answer.clueSource) { const details = document.createElement('small'); details.className = 'debug-details'; details.textContent = ` [Ginsberg database answer: ${answer.word.toUpperCase()}; ID: ${answer.clueSource.id}]`; across.append(details); } }
+  else { across.className = 'spoiler'; across.setAttribute('aria-label', 'Across hint hidden'); }
+  $('across-clues').replaceChildren(across);
+  $('across-clues').hidden = false;
+  $('across-clues').setAttribute('aria-hidden', String(!acrossClueRevealed));
+  $('reveal-across').hidden = acrossClueRevealed;
+  $('reveal-across').setAttribute('aria-expanded', String(acrossClueRevealed));
   if (state.solved) { message.textContent = 'Uncrossed! Come back tomorrow for another one.'; message.className = 'message good'; }
   else { message.textContent = ''; message.className = 'message'; }
+}
+function setActiveClue(index) {
+  activeClueIndex = index;
+  $('down-clues').querySelectorAll('li').forEach((item, clueIndex) => item.classList.toggle('active', clueIndex === index));
 }
 function focus(index) { board.querySelector(`#letter-${Math.max(0, Math.min(index, answer.word.length - 1))}`)?.focus(); }
 function onInput(index, value) { const letter = value.replace(/[^a-z]/gi, '').slice(-1).toUpperCase(); state.letters[index] = letter; const input = board.querySelector(`#letter-${index}`); input.value = letter; input.closest('.cell').classList.remove('incorrect'); persist(); if (letter && index < answer.word.length - 1) focus(index + 1); check(); }
@@ -69,6 +82,7 @@ function highlightIncorrect() {
 }
 function check() { if (state.letters.some((letter) => !letter) || state.solved) return; const correct = state.letters.join('') === answer.word.toUpperCase(); if (correct) { state.solved = true; message.textContent = 'Uncrossed! Come back tomorrow for another one.'; message.className = 'message good'; } else { message.textContent = 'Not quite — adjust any letters and try again.'; message.className = 'message bad'; } persist(); }
 $('check-letters').addEventListener('click', () => { if (!answer || state.solved) return; const wrong = highlightIncorrect(); message.textContent = wrong ? `${wrong} incorrect letter${wrong === 1 ? '' : 's'} highlighted.` : 'No incorrect letters entered.'; message.className = wrong ? 'message bad' : 'message good'; });
+$('reveal-across').addEventListener('click', () => { if (!answer) return; acrossClueRevealed = true; render(); });
 $('reset').addEventListener('click', () => { if (!answer) return; state = { letters: Array(answer.word.length).fill(''), solved: false }; persist(); message.textContent = ''; message.className = 'message'; render(); focus(0); });
 async function start() {
   message.textContent = 'Loading today’s puzzle…';
