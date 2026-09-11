@@ -14,7 +14,7 @@ h2 { margin: 1.75rem 0 .65rem; font: 700 .78rem/1.2 system-ui, sans-serif; lette
 .cell.active { border-color: #37453c; background: #eaf0e8; }
 .cell.incorrect { border-color: #b54b43; background: #f9e6e3; }
 .cell-number { position: absolute; top: .18rem; left: .26rem; font: 700 .58rem/1 system-ui, sans-serif; color: #69736c; pointer-events: none; }
-.letter-input { width: 100%; height: 100%; border: 0; background: transparent; text-align: center; text-transform: uppercase; font: 700 1.65rem/1 system-ui, sans-serif; color: #1f2723; caret-color: transparent; }
+.letter-input { width: 100%; height: 100%; margin: 0; padding: 0; border: 0; background: transparent; text-align: center; text-transform: uppercase; font: 700 1.65rem/1 system-ui, sans-serif; color: #1f2723; caret-color: transparent; }
 .letter-input:focus { outline: 0; }
 .clues { margin: 0; padding-left: 1.65rem; display: grid; gap: .5rem; }
 .clues li { padding-left: .25rem; line-height: 1.35; }
@@ -26,4 +26,9 @@ h2 { margin: 1.75rem 0 .65rem; font: 700 .78rem/1.2 system-ui, sans-serif; lette
 .help { margin: 1.25rem auto 0; max-width: 28rem; text-align: center; color: #69736c; font: .78rem/1.45 system-ui, sans-serif; }
 .attribution { margin: 2.5rem auto 0; max-width: 30rem; text-align: center; color: #7d8780; font: .7rem/1.45 system-ui, sans-serif; }
 .attribution a { color: inherit; }
-@media (max-width: 420px) { .game-shell { padding-top: 2rem; } .cell { width: 2.55rem; height: 2.55rem; } }
+@media (max-width: 420px) {
+  .game-shell { padding-top: 2rem; }
+  .board { width: 100%; gap: .25rem; }
+  .cell { flex: 1 1 0; width: auto; height: auto; min-width: 0; aspect-ratio: 1; }
+  .letter-input { font-size: clamp(.9rem, 6vw, 1.65rem); }
+}
