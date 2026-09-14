@@ -1,4 +1,4 @@
-id,letter,clue_text,mechanism,surface_answer,status,editor_notes,duplicate_key
+id,letter,clue_text,mechanism,surface_answer,status,editor_notes,duplicate_key,topic
 session-A-02,A,Top report-card mark,direct-letter-fact,,candidate,Verify uniqueness,topreportcardmark
 session-A-05,A,The article before vowel sounds,direct-letter-fact,,candidate,Check wording,articlevowels
 session-B-01,B,Honey maker,homophone,bee,candidate,Verify common pronunciation,honeybee
@@ -66,3 +66,23 @@ session-Y-03,Y,Toddlers' favorite word,direct-letter-fact,,candidate,Check conve
 session-Z-01,Z,Sleeping sound first character,direct-letter-fact,,candidate,Too easy perhaps,sleepingsound
 session-Z-02,Z,Striped animal initial,direct-letter-fact,,candidate,Too easy perhaps,zebrainitial
 session-Z-03,Z,Zulu in the NATO alphabet,direct-letter-fact,,candidate,Check convention,natozulu
+session-E-05,E,"A dot, in Morse",reference-or-trivia,,approved,Verified Morse code,edotmorse,fact
+session-E-06,E,Box-score mark for a misplay,reference-or-trivia,,approved,Verified baseball scoring,eboxscoreerror,fact
+session-E-07,E,File of both kings at the start,reference-or-trivia,,approved,Verified chess setup,echesskingfile,fact
+session-E-08,E,"14, in hexadecimal",reference-or-trivia,,approved,Verified hexadecimal notation,ehex14,fact
+session-E-09,E,Highest-pitched open string on a standard guitar,reference-or-trivia,,approved,Verified standard tuning,eguitarstring,fact
+session-E-10,E,Major key relative to C♯ minor,reference-or-trivia,,approved,Verified music theory,erelativemajor,fact
+session-E-11,E,One-letter code for glutamic acid,reference-or-trivia,,approved,Verified amino-acid code,eglutamatecode,fact
+session-E-12,E,Symbol for electric field strength,reference-or-trivia,,approved,Verified physics notation,eelectricfield,fact
+session-E-13,E,ESRB rating for all ages,reference-or-trivia,,approved,Verified ESRB rating,eesrbeveryone,fact
+session-E-14,E,End’s beginning?,wordplay,,approved,Approved letterplay,endbeginning,letterplay
+session-E-15,E,Eternity’s first moment?,wordplay,,approved,Approved letterplay,eternityfirst,letterplay
+session-E-16,E,Escape’s opening move?,wordplay,,approved,Approved letterplay,escapeopening,letterplay
+session-E-17,E,Encore’s lead-in?,wordplay,,approved,Approved letterplay,encoreleadin,letterplay
+session-E-18,E,Exit strategy opener?,wordplay,,approved,Approved letterplay,exitstrategyopener,letterplay
+session-E-19,E,End of time?,wordplay,,approved,Approved letterplay,endoftime,letterplay
+session-E-20,E,Finale of finale?,wordplay,,approved,Approved letterplay,finaleoffinale,letterplay
+session-E-21,E,End of an encore?,wordplay,,approved,Approved letterplay,endofanencore,letterplay
+session-E-22,E,Tail of a tale?,wordplay,,approved,Approved letterplay,tailofatale,letterplay
+session-E-23,E,Heart of a scene?,wordplay,,approved,Approved letterplay,heartofascene,letterplay
+session-E-24,E,Centerpiece of a piece?,wordplay,,approved,Approved letterplay,centerpieceofapiece,letterplay

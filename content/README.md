@@ -18,7 +18,7 @@ The game bundle uses `js/runtime-data.js`. It intentionally contains a small, ha
 
 ## Review CSV
 
-The required columns are `id,letter,clue_text,mechanism,surface_answer,pronunciation_variant,frequency,source_type,source_reference,source_fact,draft_method,status,editor_notes,duplicate_key`.
+The required columns are `id,letter,clue_text,mechanism,surface_answer,pronunciation_variant,frequency,source_type,source_reference,source_fact,draft_method,status,editor_notes,duplicate_key`; an optional `topic` classifies a clue for selection diversity. Use `near-homophone` as the mechanism when a session clue is deliberately a close pronunciation rather than an exact letter-name match; it is displayed to players as “nearly a homophone.” Source surfaces are configured in `HOMOPHONE_SURFACES` in `tools/build_static_assets.py` with the same distinction (for example, `HAY` for `A`).
 
 Only `approved` rows compile. An editor must reject clues with a second plausible letter answer, unverified facts, regional-only pronunciation assumptions, specialist knowledge, answer-revealing wording, or duplicated wording.
 

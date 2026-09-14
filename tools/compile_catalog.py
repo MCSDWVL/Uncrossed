@@ -26,7 +26,9 @@ def main():
             key = row.get("duplicate_key", "").strip() or normalized(clue)
             if key in keys: errors.append(f"row {number}: duplicate clue {key!r}"); continue
             if row.get("surface_answer", "").strip() and normalized(row["surface_answer"]) in normalized(clue): errors.append(f"row {number}: clue reveals surface answer"); continue
-            keys.add(key); approved[letter].append({"id": clue_id, "letter": letter, "clue": clue, "mechanism": row.get("mechanism", "")})
+            item = {"id": clue_id, "letter": letter, "clue": clue, "mechanism": row.get("mechanism", "")}
+            if row.get("topic"): item["topic"] = row["topic"]
+            keys.add(key); approved[letter].append(item)
     counts = Counter({letter: len(approved[letter]) for letter in "ABCDEFGHIJKLMNOPQRSTUVWXYZ"})
     missing = [f"{letter}={counts[letter]}" for letter in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" if counts[letter] < args.minimum]
     if missing: errors.append(f"minimum {args.minimum} not met: " + ", ".join(missing))

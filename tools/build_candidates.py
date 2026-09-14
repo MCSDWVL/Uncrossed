@@ -19,7 +19,7 @@ LETTER_PHONES = {
     "U": ("Y", "UW"), "V": ("V", "IY"), "W": ("D", "AH", "B", "AH", "L", "Y", "UW"),
     "X": ("EH", "K", "S"), "Y": ("W", "AY"), "Z": ("Z", "IY"),
 }
-FIELDS = ["id", "letter", "clue_text", "mechanism", "surface_answer", "pronunciation_variant", "frequency", "source_type", "source_reference", "source_fact", "draft_method", "status", "editor_notes", "duplicate_key"]
+FIELDS = ["id", "letter", "clue_text", "mechanism", "surface_answer", "pronunciation_variant", "frequency", "source_type", "source_reference", "source_fact", "draft_method", "status", "editor_notes", "duplicate_key", "topic"]
 
 def phones(path: Path):
     result = {}
@@ -61,7 +61,7 @@ def main():
             if not item or word == letter.lower():
                 continue
             definition = str(item.get("definition", "")).strip()
-            rows.append({"id": f"candidate-{letter}-{word}", "letter": letter, "clue_text": "", "mechanism": "homophone", "surface_answer": word, "pronunciation_variant": "CMUdict", "frequency": item.get("zipf", ""), "source_type": "CMUdict + Wiktextract", "source_reference": word, "source_fact": definition, "draft_method": "source-discovery", "status": "candidate", "editor_notes": "Write original clue wording; verify fairness.", "duplicate_key": ""})
+            rows.append({"id": f"candidate-{letter}-{word}", "letter": letter, "clue_text": "", "mechanism": "homophone", "surface_answer": word, "pronunciation_variant": "CMUdict", "frequency": item.get("zipf", ""), "source_type": "CMUdict + Wiktextract", "source_reference": word, "source_fact": definition, "draft_method": "source-discovery", "status": "candidate", "editor_notes": "Write original clue wording; verify fairness.", "duplicate_key": "", "topic": ""})
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("w", encoding="utf-8", newline="") as target:
         writer = csv.DictWriter(target, fieldnames=FIELDS); writer.writeheader(); writer.writerows(rows)

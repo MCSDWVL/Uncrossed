@@ -1,6 +1,6 @@
 :root { color-scheme: light; font-family: Georgia, 'Times New Roman', serif; color: #1f2723; background: #f6f3ed; }
 * { box-sizing: border-box; }
-body { margin: 0; min-height: 100vh; display: grid; place-items: start center; }
+body { margin: 0; min-height: 100vh; display: grid; place-items: start center; background: #f6f3ed; transition: background-color .45s ease; }
 .game-shell { width: min(100%, 48rem); padding: 3.5rem 1.25rem 2rem; }
 header { text-align: center; margin-bottom: 2.5rem; }
 .eyebrow { min-height: 1.2em; margin: 0 0 .5rem; color: #69736c; font: 700 .72rem/1.2 system-ui, sans-serif; letter-spacing: .12em; text-transform: uppercase; }
@@ -24,11 +24,19 @@ h2 { margin: 1.75rem 0 .65rem; font: 700 .78rem/1.2 system-ui, sans-serif; lette
 .clues { margin: 0; padding-left: 1.65rem; display: grid; gap: .5rem; }
 .clues li { padding-left: .25rem; line-height: 1.35; }
 .clues li.active { color: #304039; font-weight: 600; }
+.clue-near-homophone { color: #69736c; font: italic .78rem/1.2 system-ui, sans-serif; white-space: nowrap; }
 .debug-details { color: #69736c; font: .7rem/1.25 ui-monospace, SFMono-Regular, Menlo, monospace; overflow-wrap: anywhere; }
 .across-clues { font-weight: 600; }
 .across-clues li.spoiler { min-height: 1.35em; border-radius: .12rem; background: #1f2723; user-select: none; }
 .message { min-height: 1.5em; margin: 2rem 0 .75rem; text-align: center; font-weight: 700; }
 .message.good { color: #2e6b48; }.message.bad { color: #a33e39; }
+body.solved { background: #dcefe0; }
+body.solved .game-shell { animation: completion-arrival .45s ease-out; }
+body.solved .cell { border-color: #3d8057; background: #cbe7d2; box-shadow: inset 0 0 0 1px #eaf7ed; }
+body.solved .letter-input { color: #1d5a35; }
+body.solved .message { margin-top: 2.25rem; font-size: 1.12rem; color: #1d5a35; }
+@keyframes completion-arrival { from { transform: translateY(5px); } to { transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { body, body.solved .game-shell { animation: none; transition: none; } }
 .reset { display: block; margin: 0 auto; padding: .55rem .85rem; border: 1px solid #7d8780; border-radius: .2rem; color: #304039; background: transparent; font: 600 .8rem system-ui, sans-serif; cursor: pointer; }
 .help { margin: 1.25rem auto 0; max-width: 28rem; text-align: center; color: #69736c; font: .78rem/1.45 system-ui, sans-serif; }
 .attribution { margin: 2.5rem auto 0; max-width: 30rem; text-align: center; color: #7d8780; font: .7rem/1.45 system-ui, sans-serif; }

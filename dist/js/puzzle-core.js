@@ -26,6 +26,11 @@ export function assignClues(answer, seed, clues) {
   const random = rngFor(`clues:${seed}`), used = new Set();
   return [...answer.word.toUpperCase()].map((letter) => {
     const choices = clues[letter].filter((clue) => !used.has(clue.id));
-    const clue = choices[Math.floor(random() * choices.length)]; used.add(clue.id); return clue;
+    // Reserve one in five E puzzles for footwear-width clues. The category is
+    // selected by seed, so a shared puzzle always presents the same clue.
+    const wantsShoeSize = letter === 'E' && hash(`shoe-size:${seed}:E`) % 5 === 0;
+    const preferred = choices.filter((clue) => wantsShoeSize ? clue.topic === 'shoe-size' : clue.topic !== 'shoe-size');
+    const pool = preferred.length ? preferred : choices;
+    const clue = pool[Math.floor(random() * pool.length)]; used.add(clue.id); return clue;
   });
 }

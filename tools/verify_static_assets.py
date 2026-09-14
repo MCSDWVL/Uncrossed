@@ -18,6 +18,13 @@ def main():
     for letter in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
         down = load(root / "data/down" / f"{letter.lower()}.json")
         assert down.get("letter") == letter and down.get("clues"), f"No down clues for {letter}."
+        assert all(clue.get("homophone") in (None, "near") for clue in down["clues"]), f"Invalid homophone label for {letter}."
+        assert all(not clue.get("topic") or clue["topic"] in ("fact", "letterplay", "shoe-size") for clue in down["clues"]), f"Invalid clue topic for {letter}."
+    a_clues = load(root / "data/down/a.json")["clues"]
+    assert all(clue.get("homophone") == "near" for clue in a_clues if clue.get("sourceAnswer") == "HAY"), "HAY clues for A must be marked as near homophones."
+    e_clues = load(root / "data/down/e.json")["clues"]
+    assert sum(clue.get("topic") == "shoe-size" for clue in e_clues) > 0, "E needs classified shoe-size clues."
+    assert sum(clue.get("topic") in ("fact", "letterplay") for clue in e_clues) >= 20, "E needs the expanded authored clue pool."
     for entry in index["answers"]:
         word, shard = entry["word"], entry["shard"]
         assert word.isalpha() and 6 <= len(word) <= 10 and shard == word[:2]

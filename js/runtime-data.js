@@ -1,4 +1,4 @@
-// Generated-runtime shape: [{ id, letter, clue, mechanism }].
+// Generated-runtime shape: [{ id, letter, clue, mechanism, homophone?: 'near' }].
 // This starter catalog is deliberately small; content/README.md describes the 20/letter release gate.
 const entries = {
   A:["Top letter grade","The indefinite article"],

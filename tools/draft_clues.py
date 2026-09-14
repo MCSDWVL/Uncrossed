@@ -15,7 +15,7 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
-FIELDS = ["id", "letter", "clue_text", "mechanism", "surface_answer", "pronunciation_variant", "frequency", "source_type", "source_reference", "source_fact", "draft_method", "status", "editor_notes", "duplicate_key"]
+FIELDS = ["id", "letter", "clue_text", "mechanism", "surface_answer", "pronunciation_variant", "frequency", "source_type", "source_reference", "source_fact", "draft_method", "status", "editor_notes", "duplicate_key", "topic"]
 LETTER_SURFACES = {
     "A": ["a", "aye"], "B": ["bee", "be"], "C": ["sea", "see"], "D": ["dee"], "E": ["eye"], "F": ["eff"], "G": ["gee"], "H": ["aitch"], "I": ["eye"], "J": ["jay"], "K": ["kay"], "L": ["ell"], "M": ["em"], "N": ["en"], "O": ["owe"], "P": ["pea"], "Q": ["queue", "cue"], "R": ["are"], "S": ["ess"], "T": ["tea", "tee"], "U": ["you", "ewe"], "V": ["vee"], "W": ["double-u"], "X": ["ex"], "Y": ["why"], "Z": ["zee", "zed"]
 }
@@ -48,7 +48,7 @@ def safe_rows(items, letter, model):
         if not clue or key in seen:
             continue
         seen.add(key)
-        rows.append({"id": f"llm-{letter}-{len(rows)+1:03}", "letter": letter, "clue_text": clue, "mechanism": mechanism, "surface_answer": surface, "pronunciation_variant": "", "frequency": "", "source_type": "LLM candidate — research required", "source_reference": str(item.get("research_hint", "")).strip(), "source_fact": str(item.get("source_fact", "")).strip(), "draft_method": f"OpenAI Responses API ({model})", "status": "candidate", "editor_notes": "Verify fact/pronunciation and edit for fairness before approval.", "duplicate_key": key})
+        rows.append({"id": f"llm-{letter}-{len(rows)+1:03}", "letter": letter, "clue_text": clue, "mechanism": mechanism, "surface_answer": surface, "pronunciation_variant": "", "frequency": "", "source_type": "LLM candidate — research required", "source_reference": str(item.get("research_hint", "")).strip(), "source_fact": str(item.get("source_fact", "")).strip(), "draft_method": f"OpenAI Responses API ({model})", "status": "candidate", "editor_notes": "Verify fact/pronunciation and edit for fairness before approval.", "duplicate_key": key, "topic": ""})
     return rows
 
 def main():

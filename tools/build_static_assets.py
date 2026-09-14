@@ -22,15 +22,45 @@ from build_candidates import LETTER_PHONES, phones
 
 SOURCE = "Crossword clues sourced from Matt Ginsberg's Crossword Clue Database (final edition, 2023)"
 ALPHA = set("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-HOMOPHONE_WORDS = {
-    "A": {"EH","EY","HEY","AY","HAY"}, "B": {"BEE", "BE"}, "C": {"SEA", "SEE"},
-    "D": {"DEE"}, "E": {"EE", "EEE","HE"}, "F": {"EFF"}, "G": {"GEE"},
-    "H": {"AITCH"}, "I": {"EYE", "AYE"}, "J": {"JAY"}, "K": {"KAY"},
-    "L": {"ELL"}, "M": {"EM","THEM"}, "N": {"EN", "END", "IN"}, "O": {"OH", "OWE"},
-    "P": {"PEA", "PEE"}, "Q": {"QUEUE", "CUE"}, "R": {"ARE"},
-    "S": {"ESS", "ES"}, "T": {"TEA", "TEE"}, "U": {"YOU", "EWE", "YEW", "EU"},
-    "V": {"VEE"}, "W": {"DOUBLEU"}, "X": {"EX"}, "Y": {"WHY"}, "Z": {"ZEE"},
+# The surface word is the configuration boundary for pronunciation judgment.
+# Values in ``near`` are intentionally labelled in the puzzle UI. For example,
+# HAY is accepted for A, but players are told it is only nearly a homophone.
+HOMOPHONE_SURFACES = {
+    "A": {"exact": {"EH", "EY", "AY"}, "near": {"HAY", "HEY"}},
+    "B": {"exact": {"BEE", "BE"}}, "C": {"exact": {"SEA", "SEE"}},
+    "D": {"exact": {"DEE"}}, "E": {"exact": {"EE", "EEE"}, "near": {"HE"}}, "F": {"exact": {"EFF"}}, "G": {"exact": {"GEE"}},
+    "H": {"exact": {"AITCH"}}, "I": {"exact": {"EYE", "AYE"}}, "J": {"exact": {"JAY"}}, "K": {"exact": {"KAY"}},
+    "L": {"exact": {"ELL"}}, "M": {"exact": {"EM"}, "near": {"THEM"}}, "N": {"exact": {"EN", "IN"}, "near": {"END"}}, "O": {"exact": {"OH", "OWE"}},
+    "P": {"exact": {"PEA", "PEE"}}, "Q": {"exact": {"QUEUE", "CUE"}}, "R": {"exact": {"ARE"}},
+    "S": {"exact": {"ESS", "ES"}}, "T": {"exact": {"TEA", "TEE"}}, "U": {"exact": {"YOU", "EWE", "YEW", "EU"}},
+    "V": {"exact": {"VEE"}}, "W": {"exact": {"DOUBLEU"}}, "X": {"exact": {"EX"}}, "Y": {"exact": {"WHY"}}, "Z": {"exact": {"ZEE"}},
 }
+# EEE is a legitimate spoken surface for E, but the source corpus heavily
+# concentrates it in footwear-width clues. Keep those clues available without
+# allowing them to crowd out the rest of the E catalog.
+SHOE_SIZE_CLUE = re.compile(
+    r"\b(?:shoe|shoes|shoebox|boot|boots|bootery|sneaker|sneakers|foot|feet|footwear|"
+    r"bigfoot|brannock|brogan|brogue|clodhopper|florsheim|hush\s+pupp(?:y|ies)|loafer|loafers|"
+    r"moccasin|moccasins|oxford|oxfords|pump|pumps|sandal|sandals|slipper|slippers|sole|soles|"
+    r"timberland|thom\s+mcans?|zappos|toe|toes|wide|width|wedge|wedgie|size|sizes|fitting|"
+    r"fit|last|kicks|footprint)\b",
+    re.IGNORECASE,
+)
+
+def source_topic(letter, answer, clue):
+    if letter == "E" and answer == "EEE" and SHOE_SIZE_CLUE.search(clue):
+        return "shoe-size"
+    return None
+
+def homophone_kind(letter, answer, pronunciations):
+    """Return ``exact`` or ``near`` when this surface can clue a letter."""
+    surfaces = HOMOPHONE_SURFACES[letter]
+    for kind, words in surfaces.items():
+        if answer in words:
+            return kind
+    if pronunciations and pronunciations.get(answer, set()) & {tuple(LETTER_PHONES[letter])}:
+        return "exact"
+    return None
 
 def compact(value):
     return re.sub(r"\s+", " ", value).strip()
@@ -110,14 +140,16 @@ def main():
                     across[answer].append({"id": source_id, "clue": clue})
                     seen_across[answer].add(key)
                     eligible.add(answer)
-            for letter, surfaces in HOMOPHONE_WORDS.items():
-                matches = answer in surfaces
-                if not matches and pronunciations:
-                    matches = bool(pronunciations.get(answer, set()) & {tuple(p) for p in [LETTER_PHONES[letter]]})
-                if matches and hygienic(clue, answer):
+            for letter in HOMOPHONE_SURFACES:
+                kind = homophone_kind(letter, answer, pronunciations)
+                if kind and hygienic(clue, answer):
                     key = clue.casefold()
                     if key not in seen_down[letter]:
-                        down[letter].append({"id": source_id, "clue": clue, "mechanism": "source-homophone", "sourceAnswer": answer})
+                        item = {"id": source_id, "clue": clue, "mechanism": "source-homophone", "sourceAnswer": answer}
+                        if kind == "near": item["homophone"] = "near"
+                        topic = source_topic(letter, answer, clue)
+                        if topic: item["topic"] = topic
+                        down[letter].append(item)
                         seen_down[letter].add(key)
 
     # Existing authored, session, and conventional entries are approved by default.
@@ -131,7 +163,10 @@ def main():
         for row in csv.DictReader(source):
             letter, clue = row.get("letter", ""), compact(row.get("clue_text", ""))
             if letter in ALPHA and clue and row.get("id") not in disabled and clue.casefold() not in seen_down[letter]:
-                down[letter].append({"id": row["id"], "clue": clue, "mechanism": row.get("mechanism") or "session"})
+                item = {"id": row["id"], "clue": clue, "mechanism": row.get("mechanism") or "session"}
+                if row.get("mechanism") == "near-homophone": item["homophone"] = "near"
+                if row.get("topic"): item["topic"] = row["topic"]
+                down[letter].append(item)
                 seen_down[letter].add(clue.casefold())
     for item in json.loads((repo / "content/conventional-facts.json").read_text(encoding="utf-8")):
         letter, clue = item["letter"], compact(item["fact"])
@@ -146,6 +181,7 @@ def main():
         if clue.casefold() not in seen_down["W"]:
             copied = {"id": f"double-u-{item['id']}", "clue": clue, "mechanism": "double-u"}
             if item.get("sourceAnswer"): copied["sourceAnswer"] = item["sourceAnswer"]
+            if item.get("homophone"): copied["homophone"] = item["homophone"]
             down["W"].append(copied)
             seen_down["W"].add(clue.casefold())
 
