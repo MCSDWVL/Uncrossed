@@ -81,7 +81,7 @@ function highlightIncorrect() {
   });
   return wrong;
 }
-function check() { if (state.letters.some((letter) => !letter) || state.solved) return; const correct = state.letters.join('') === answer.word.toUpperCase(); if (correct) { state.solved = true; message.textContent = 'Uncrossed! Come back tomorrow for another one.'; message.className = 'message good'; } else { message.textContent = 'Not quite — adjust any letters and try again.'; message.className = 'message bad'; } persist(); }
+function check() { if (state.letters.some((letter) => !letter) || state.solved) return; const correct = state.letters.join('') === answer.word.toUpperCase(); if (correct) { state.solved = true; persist(); render(); } else { message.textContent = 'Not quite — adjust any letters and try again.'; message.className = 'message bad'; persist(); } }
 $('check-letters').addEventListener('click', () => { if (!answer || state.solved) return; const wrong = highlightIncorrect(); message.textContent = wrong ? `${wrong} incorrect letter${wrong === 1 ? '' : 's'} highlighted.` : 'No incorrect letters entered.'; message.className = wrong ? 'message bad' : 'message good'; });
 $('reveal-across').addEventListener('click', () => { if (!answer) return; acrossClueRevealed = true; render(); });
 $('reset').addEventListener('click', () => { if (!answer) return; state = { letters: Array(answer.word.length).fill(''), solved: false }; persist(); message.textContent = ''; message.className = 'message'; render(); focus(0); });
