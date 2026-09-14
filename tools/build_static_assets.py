@@ -22,6 +22,13 @@ from build_candidates import LETTER_PHONES, phones
 
 SOURCE = "Crossword clues sourced from Matt Ginsberg's Crossword Clue Database (final edition, 2023)"
 ALPHA = set("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+# These descriptions do not distinguish one letter from another.
+GENERIC_LETTER_CLUES = {
+    "alphabet letter", "alphabet character", "alphabetic character",
+    "letter of the alphabet", "english letter", "letter", "consonant", "vowel",
+    "common consonant", "spelled letter", "alphabetic homophone",
+    "homophone of a letter", "word that sounds like a letter",
+}
 # The surface word is the configuration boundary for pronunciation judgment.
 # Values in ``near`` are intentionally labelled in the puzzle UI. For example,
 # HAY is accepted for A, but players are told it is only nearly a homophone.
@@ -64,6 +71,11 @@ def homophone_kind(letter, answer, pronunciations):
 
 def compact(value):
     return re.sub(r"\s+", " ", value).strip()
+
+def generic_letter_clue(clue):
+    wording = compact(re.sub(r"[^a-z0-9\s]", " ", clue.casefold()))
+    wording = re.sub(r"^(?:a|an|the) ", "", wording)
+    return wording in GENERIC_LETTER_CLUES
 
 def identifier(prefix, *parts):
     value = "|".join(str(part) for part in parts).encode("utf-8")
@@ -173,6 +185,10 @@ def main():
         if clue.casefold() not in seen_down[letter]:
             down[letter].append({"id": identifier("fact", letter, clue), "clue": clue, "mechanism": "conventional"})
             seen_down[letter].add(clue.casefold())
+
+    # Apply to every down-clue source before copying U clues into W.
+    for letter in down:
+        down[letter] = [item for item in down[letter] if not generic_letter_clue(item["clue"])]
 
     # W is conventionally “double U.” Reuse the richer U catalog rather than
     # relying on the very small set of standalone W-name homophones.

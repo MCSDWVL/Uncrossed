@@ -4,6 +4,8 @@
 
 The current release workflow is deliberately permissive: Ginsberg across clues and identified letter-name homophone clues ship after mechanical hygiene filtering. The original session candidates, conventional facts, and starter clues also ship by default. Editorial review is optional; remove a bad generated ID through `disabled-clues.json` and rebuild.
 
+The build excludes generic down clues such as “Alphabet letter,” “Letter of the alphabet,” and “Alphabetic character,” which do not identify a particular letter. Specific clues such as “Eighth letter” remain eligible.
+
 `tools/build_static_assets.py` is an offline-only compiler. It reads `tiwwdty/cluedata`, a local Lexicon JSONL (Zipf >= 4), and optionally CMUdict; it writes only derived browser assets under `dist/`. The browser loads the answer index and down catalog first, then one two-letter across shard for the day. Do not commit the raw input files.
 
 The game bundle uses `js/runtime-data.js`. It intentionally contains a small, hand-reviewed starter catalog (five clues per letter), so the site can run immediately. Before public launch, grow this to the planned 20 approved clues per letter using the workflow below.
