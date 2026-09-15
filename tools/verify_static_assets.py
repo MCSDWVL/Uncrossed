@@ -10,9 +10,12 @@ def load(path):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--directory", type=Path, default=Path("dist"))
+    parser.add_argument("--disabled", type=Path, default=Path("content/disabled-clues.json"))
     args = parser.parse_args()
     root = args.directory
     index = load(root / "data/answers-index.json")
+    disabled_data = load(args.disabled) if args.disabled.exists() else []
+    disabled = set(disabled_data.get("disabled", disabled_data))
     assert index.get("v") == 1
     assert len(index["answers"]) > 90, "Need more than 90 supported answers."
     for letter in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
@@ -20,6 +23,7 @@ def main():
         assert down.get("letter") == letter and down.get("clues"), f"No down clues for {letter}."
         assert all(clue.get("homophone") in (None, "near") for clue in down["clues"]), f"Invalid homophone label for {letter}."
         assert all(not clue.get("topic") or clue["topic"] in ("fact", "letterplay", "shoe-size") for clue in down["clues"]), f"Invalid clue topic for {letter}."
+        assert not {clue["id"] for clue in down["clues"]} & disabled, f"Disabled clue published in {letter} down clues."
     a_clues = load(root / "data/down/a.json")["clues"]
     assert all(clue.get("homophone") == "near" for clue in a_clues if clue.get("sourceAnswer") == "HAY"), "HAY clues for A must be marked as near homophones."
     e_clues = load(root / "data/down/e.json")["clues"]
@@ -30,6 +34,7 @@ def main():
         assert word.isalpha() and 6 <= len(word) <= 10 and shard == word[:2]
         clues = load(root / "data/across" / f"{shard}.json")["answers"].get(word)
         assert clues, f"No across clue for {word}."
+        assert not {clue["id"] for clue in clues} & disabled, f"Disabled clue published for {word}."
     print(f"Verified {len(index['answers']):,} answers and generated data integrity in {root}.")
 
 if __name__ == "__main__": main()

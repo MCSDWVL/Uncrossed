@@ -20,7 +20,13 @@ python tools/verify_static_assets.py; python -m http.server 8000 --directory dis
 
 Open `http://localhost:8000`. Add `?seed=2026-09-10` to reproduce a specific Pacific-date puzzle. Commit `dist/` and push `main`; the included Pages workflow deploys that prebuilt directory. The workflow does not run the compiler.
 
-To suppress a bad clue without revising source data, add its generated ID (for example `g-12345-678`) to `content/disabled-clues.json` and rebuild.
+To suppress a bad clue without revising source data, add its generated ID (for example `g-12345-678`) to `content/disabled-clues.json`, then apply it to the existing deployable assets:
+
+```powershell
+python tools/apply_disabled_clues.py; python tools/verify_static_assets.py
+```
+
+This fast path only filters published shards and refreshes their manifest. Run the full build after changing the source corpus or compiler rules.
 
 ## Development fallback
 
@@ -34,7 +40,7 @@ python -m http.server 8000
 
 ```powershell
 node tools/test_game.mjs
-python -m py_compile tools/build_static_assets.py tools/verify_static_assets.py
+python -m py_compile tools/build_static_assets.py tools/apply_disabled_clues.py tools/verify_static_assets.py
 ```
 
 ## Content

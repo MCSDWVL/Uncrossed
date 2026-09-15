@@ -182,8 +182,9 @@ def main():
                 seen_down[letter].add(clue.casefold())
     for item in json.loads((repo / "content/conventional-facts.json").read_text(encoding="utf-8")):
         letter, clue = item["letter"], compact(item["fact"])
-        if clue.casefold() not in seen_down[letter]:
-            down[letter].append({"id": identifier("fact", letter, clue), "clue": clue, "mechanism": "conventional"})
+        clue_id = identifier("fact", letter, clue)
+        if clue_id not in disabled and clue.casefold() not in seen_down[letter]:
+            down[letter].append({"id": clue_id, "clue": clue, "mechanism": "conventional"})
             seen_down[letter].add(clue.casefold())
 
     # Apply to every down-clue source before copying U clues into W.
@@ -216,6 +217,18 @@ def main():
     write_json(data_dir / "answers-index.json", {"v": 1, "answers": index, "downCounts": down_counts})
     for letter in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
         write_json(data_dir / "down" / f"{letter.lower()}.json", {"v": 1, "letter": letter, "clues": down[letter]})
+    published_ids = {
+        clue["id"]
+        for entries in across.values()
+        for clue in entries
+    } | {
+        clue["id"]
+        for entries in down.values()
+        for clue in entries
+    }
+    leaked_disabled = published_ids & disabled
+    if leaked_disabled:
+        raise RuntimeError(f"Disabled clue IDs were published: {', '.join(sorted(leaked_disabled))}")
     files = [path for path in destination.rglob("*") if path.is_file() and path.name != "manifest.json"]
     sizes = {str(path.relative_to(destination)).replace("\\", "/"): path.stat().st_size for path in files}
     gzip_sizes = {name: len(gzip.compress((destination / name).read_bytes(), mtime=0)) for name in sizes}

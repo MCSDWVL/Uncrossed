@@ -2,7 +2,7 @@
 
 ## Published-corpus workflow
 
-The current release workflow is deliberately permissive: Ginsberg across clues and identified letter-name homophone clues ship after mechanical hygiene filtering. The original session candidates, conventional facts, and starter clues also ship by default. Editorial review is optional; remove a bad generated ID through `disabled-clues.json` and rebuild.
+The current release workflow is deliberately permissive: Ginsberg across clues and identified letter-name homophone clues ship after mechanical hygiene filtering. The original session candidates, conventional facts, and starter clues also ship by default. Editorial review is optional; remove a bad generated ID through `disabled-clues.json` and run `python tools/apply_disabled_clues.py`. Use the full rebuild only when source data or compiler rules change.
 
 The build excludes generic down clues such as “Alphabet letter,” “Letter of the alphabet,” and “Alphabetic character,” which do not identify a particular letter. Specific clues such as “Eighth letter” remain eligible.
 
